@@ -2,6 +2,7 @@ import { useEffect, useReducer } from 'react';
 import { APEX, Level2, Trade } from 'apex-api';
 import { initialState, reducer } from './reducer';
 
+
 const apex = new APEX('wss://api_demo.alphapoint.com/WSGateway/');
 
 export const init = async dispatch => {
@@ -64,6 +65,7 @@ export const useSubscribeLevel2 = ({ Depth, InstrumentId }, dispatch) => {
 
 export const useSubscribeLevel1 = (InstrumentId, dispatch) => {
   useEffect(() => {
+    console.log("Instrument changed to " + InstrumentId);
     (async () => {
       try {
         const level1 = await apex.SubscribeLevel1({

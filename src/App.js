@@ -74,9 +74,13 @@ const App = props => {
         <div key="ticker">
           <Ticker {...{ level1, InstrumentId, dispatch }} />
         </div>
+        {/* When user clicks on a different instrument, the state is updated
+            and components are rerendered; level1 should
+            change to selected instrument DOM updates */}
         <div key="instrumentSelector">
           <InstrumentSelector {...{ Instruments, dispatch }} />
         </div>
+
         <div key="order_entry">
           <OrderEntry AccountId={AccountId} InstrumentId={InstrumentId} />
         </div>
