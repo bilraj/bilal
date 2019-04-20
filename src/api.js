@@ -71,7 +71,9 @@ export const useSubscribeLevel1 = (InstrumentId, dispatch) => {
           InstrumentId
         });
         dispatch({ type: 'SET_LEVEL_1', payload: level1 });
+        // Subscribe is evoked when action is dispatched
         apex.level1.subscribe(update => {
+          // Update the paylod for level1
           dispatch({ type: 'SET_LEVEL_1', payload: update });
         });
       } catch (e) {
@@ -79,6 +81,7 @@ export const useSubscribeLevel1 = (InstrumentId, dispatch) => {
       }
     })();
     return () => apex.UnSubscribeLevel1({ OMSId: 1, InstrumentId });
+    // [InstrumentId] as second parameter tells it to run only when instrumentId has changed
   }, [InstrumentId]);
 };
 
