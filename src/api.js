@@ -2,10 +2,13 @@ import { useEffect, useReducer } from 'react';
 import { APEX, Level2, Trade } from 'apex-api';
 import { initialState, reducer } from './reducer';
 
+var util = require('util')
 
 const apex = new APEX('wss://api_demo.alphapoint.com/WSGateway/');
 
+
 export const init = async dispatch => {
+  console.log("Initializing session")
   const instruments = await apex.GetInstruments({ OMSId: 1 });
   dispatch({ type: 'SET_INSTRUMENTS', payload: instruments });
   const [instrument] = instruments;
@@ -36,10 +39,17 @@ export const logout = dispatch => {
   apex.LogOut();
 };
 
+/* Retrieves the latest Level 2 Ticker information and then subscribes the user to Level 2 market data event updates for one specific 
+instrument. Level 2 allows the user to specify the level of market depth information on either side of the bid and ask. The 
+SubscribeLevel2 call responds with the Level 2 response shown below. The OMS then periodically sends Level2UpdateEvent information 
+in the same format as this response until you send the UnsubscribeLevel2 call.
+ */
 export const useSubscribeLevel2 = ({ Depth, InstrumentId }, dispatch) => {
   useEffect(() => {
     (async () => {
+      // Clear buys and sells 
       dispatch({ type: 'CLEAR_ORDERBOOK' });
+
       const level2_response = await apex.SubscribeLevel2({
         Depth,
         InstrumentId,
@@ -65,16 +75,22 @@ export const useSubscribeLevel2 = ({ Depth, InstrumentId }, dispatch) => {
 
 export const useSubscribeLevel1 = (InstrumentId, dispatch) => {
   useEffect(() => {
-    console.log("Instrument changed to " + InstrumentId);
+
+    console.log(util.inspect(apex));
+
+   // console.log("Instrument changed to " + InstrumentId);
     (async () => {
       try {
         const level1 = await apex.SubscribeLevel1({
           OMSId: 1,
           InstrumentId
         });
+ 
         dispatch({ type: 'SET_LEVEL_1', payload: level1 });
-        // Subscribe is evoked when action is dispatched
+        console.log("Set level 1")
+        // Subscribe is invoked when action is dispatched; updates the state
         apex.level1.subscribe(update => {
+          //console.log("Updating level 1 through listener")
           // Update the paylod for level1
           dispatch({ type: 'SET_LEVEL_1', payload: update });
         });
@@ -119,11 +135,22 @@ export const useBalances = (AccountId, loggedIn, dispatch) => {
   useEffect(() => {
     (async () => {
       if (loggedIn) {
+        // If user is logged in, get account balances 
+        /* Retrieves a list of positions (balances) for a specific user account running under a specific Order Management System. 
+           The trading day runs from UTC Midnight to UTC Midnight.
+        */
         const positions_response = await apex.GetAccountPositions({
           OMSId: 1,
           AccountId
         });
+
+        // Notify reducer to add balances
         dispatch({ type: 'ADD_BALANCES', payload: positions_response });
+
+        /*Subscribes the user to notifications about the status of account-level events: orders, trades, position updates, 
+        deposits, and withdrawals for a specific account on the Order Management System (OMS). The subscription reports all
+         events associated with a given account; there is no filter at the call level to subscribe to some events and not others.
+         */
         apex.SubscribeAccountEvents({
           AccountId,
           OMSId: 1
@@ -132,6 +159,7 @@ export const useBalances = (AccountId, loggedIn, dispatch) => {
           .filter(x => x.n === 'AccountPositionEvent')
           .subscribe(response => {
             const update = JSON.parse(response.o);
+            console.log("UPDATE: " + update)
             dispatch({ type: 'UPDATE_BALANCE', payload: update });
           });
       }
@@ -143,6 +171,9 @@ export const useOrders = (AccountId, loggedIn, dispatch) => {
   useEffect(() => {
     (async () => {
       if (loggedIn) {
+        /* Returns an array of 0 or more orders that have not yet been filled (open orders) for a single account on a 
+           specific Order Management System. The call returns an empty array if an account has no open orders.
+*/
         const orders_response = await apex.GetOpenOrders({
           OMSId: 1,
           AccountId
@@ -169,7 +200,12 @@ export const useAPEXReducer = () => {
 };
 
 export const sendOrder = async order => {
+  console.log("Sending order")
   console.log(order);
+
+/*Creates an order.
+Anyone submitting an order should also subscribe to the various market data and event feeds, or call GeOpenOrders or GetOrderStatus 
+to monitor the status of the order. If the order is not in a state to be executed, GetOpenOrders will not return it. */
   const result = await apex.SendOrder(order);
   console.log(result);
 };

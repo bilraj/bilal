@@ -21,6 +21,7 @@ const styles = theme => ({
 
 export const UnstyledTicker = ({ InstrumentId, dispatch, level1, classes }) => {
   useSubscribeLevel1(InstrumentId, dispatch);
+  //console.log("Changing ticker for instrument id: " + InstrumentId)
   const {
     LastTradedPx,
     LastTradedQty,
@@ -29,6 +30,7 @@ export const UnstyledTicker = ({ InstrumentId, dispatch, level1, classes }) => {
     Volume,
     Timestamp
   } = level1;
+  //console.log(LastTradedPx + " " + LastTradedQty + " " + BestBid + " " + BestOffer + " " + Volume + " " + Timestamp)
   return (
     <Table className={classes.table}>
       <TableHead>

@@ -29,6 +29,7 @@ export const UnstyledOrderBook = ({
   dispatch,
   classes
 }) => {
+  //console.log("Calling subscribe level 2")
   useSubscribeLevel2({ InstrumentId, Depth: 10 }, dispatch);
 
   const displayBuys = Object.values(buys)

@@ -10,6 +10,7 @@ export const Balances = ({
   Products,
   dispatch
 }) => {
+  
   useBalances(AccountId, loggedIn, dispatch);
   const [deposit, setDeposit] = useState(false);
   const [withdraw, setWithdraw] = useState(false);

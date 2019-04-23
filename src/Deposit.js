@@ -8,13 +8,19 @@ export const Deposit = ({ Products, AccountId }) => {
     <>
       <h2>Deposit Info</h2>
       <select
+        // When user selects a product, set it and retrieve deposit form template
         onChange={async event => {
           console.log(event.target.value);
           setProduct(event.target.value);
+
+          /*Returns a single object describing a single deposit form template that is available to the caller and the 
+          caller's account, and appropriate to the product being deposited.
+          */
           const result = await getDepositRequestInfoTemplate({
             AccountId,
             ProductId: event.target.value
           });
+          // If we've found a result, set address with result
           result ? setAddress(result) : setAddress(false);
         }}>
         <option value={0}>Select Product to Deposit</option>
