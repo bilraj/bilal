@@ -5,7 +5,7 @@ import GridLayout from 'react-grid-layout';
 import { initialState, reducer } from './reducer';
 import { init, getFromLS, saveToLS } from './api';
 
-import { InstrumentSelector } from './InstrumentSelector';
+import InstrumentSelector from './InstrumentSelector';
 import { Ticker } from './Ticker';
 import { Login } from './Login';
 import { OrderBook } from './OrderBook';
@@ -20,6 +20,7 @@ import './App.css';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import Graph from './Graph';
+import AddInstrument from './addInstrument';
 
 const originalLayout = getFromLS('layout') || [
   { w: 5, h: 3, x: 0, y: 0, i: 'ticker', moved: false, static: false },
@@ -32,7 +33,7 @@ const originalLayout = getFromLS('layout') || [
     moved: false,
     static: false
   },
-  { w: 2, h: 10, x: 10, y: 100, i: 'login', moved: false, static: false },
+  { w: 2, h: 6, x: 10, y: 5, i: 'addInstrument', moved: false, static: false },
   { w: 2, h: 10, x: 10, y: 10, i: 'login', moved: false, static: false },
   { w: 2, h: 5, x: 3, y: 8, i: 'order_entry', moved: false, static: false },
   { w: 2, h: 14, x: 1, y: 3, i: 'balances', moved: false, static: false },
@@ -67,7 +68,7 @@ const App = props => {
 
     <div>
       <img src={logo} />
-      <button className="myButton">Login</button>
+      <button style= {{position: "absolute", top: "8px", right:"16px"}} className="myButton">Login</button>
       <GridLayout
         className="layout"
         layout={layout}
@@ -85,6 +86,10 @@ const App = props => {
 
         <div key="ticker">
           <Ticker {...{ level1, InstrumentId, dispatch }} />
+        </div>
+
+        <div key="addInstrument">
+          <AddInstrument />
         </div>
         {/* When user clicks on a different instrument, the state is updated
             and components are rerendered; level1 should

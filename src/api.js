@@ -9,8 +9,28 @@ const apex = new APEX('wss://api_demo.alphapoint.com/WSGateway/');
 
 export const init = async dispatch => {
   console.log("Initializing session")
-  const instruments = await apex.GetInstruments({ OMSId: 1 });
+  const instruments = await apex.GetInstruments({ OMSId: 1 }); /////////////////////// UNDO THIS////////////////////////////
   //console.log("SDNAJDSJKA DJKSA " + instruments);
+  var instr = {
+    "omsId":1 ,
+    "instrumentId": 1,
+    "symbol": "FPI",
+    "product1": 1,
+    "product1Symbol": "FPI",
+    "product2": 3,
+    "product2Symbol": "USD",
+    "instrumentType": "Standard",
+    "venueInstrumentId": 1,
+    "venueId":0,"sortIndex": 1,
+    "sessionStatus": 0,
+    "previousSessionStatus": "Paused",
+    "sessionStatusDateTime": "0001-01-01T00:00:00",
+    "selfTradePrevention": false,
+    "quantityIncrement": 1e-8,
+    "priceIncrement": 0.0  
+  }
+
+
   //alert(JSON.stringify(instruments, null, 4));
   dispatch({ type: 'SET_INSTRUMENTS', payload: instruments });
   const [instrument] = instruments;
