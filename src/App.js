@@ -13,10 +13,13 @@ import { Trades } from './Trades';
 import { Balances } from './Balances';
 import { Orders } from './Orders';
 import { OrderEntry } from './OrderEntry';
-
+//import Graph from './Graph';
+import logo from './logo.jpg';
+import './Button.css';
 import './App.css';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import Graph from './Graph';
 
 const originalLayout = getFromLS('layout') || [
   { w: 5, h: 3, x: 0, y: 0, i: 'ticker', moved: false, static: false },
@@ -29,11 +32,13 @@ const originalLayout = getFromLS('layout') || [
     moved: false,
     static: false
   },
+  { w: 2, h: 10, x: 10, y: 100, i: 'login', moved: false, static: false },
+  { w: 2, h: 10, x: 10, y: 10, i: 'login', moved: false, static: false },
   { w: 2, h: 5, x: 3, y: 8, i: 'order_entry', moved: false, static: false },
   { w: 2, h: 14, x: 1, y: 3, i: 'balances', moved: false, static: false },
   { w: 3, h: 5, x: 3, y: 3, i: 'orders', moved: false, static: false },
   { w: 2, h: 29, x: 6, y: 0, i: 'orderbook', moved: false, static: false },
-  { w: 2, h: 18, x: 8, y: 0, i: 'trades', moved: false, static: false }
+  { w: 2, h: 108, x: 8, y: 0, i: 'trades', moved: false, static: false }
 ];
 
 const App = props => {
@@ -59,8 +64,10 @@ const App = props => {
   } = state;
 
   return (
+
     <div>
-      <Login {...{ loggedIn, dispatch }} />
+      <img src={logo} />
+      <button className="myButton">Login</button>
       <GridLayout
         className="layout"
         layout={layout}
@@ -70,7 +77,12 @@ const App = props => {
         onLayoutChange={layout => {
           saveToLS('layout', layout);
           setLayout(layout);
-        }}>
+        }}>{/* 
+        <div key="login">
+        <Login {...{ loggedIn, dispatch }} />
+      </div>
+        */}
+
         <div key="ticker">
           <Ticker {...{ level1, InstrumentId, dispatch }} />
         </div>
@@ -79,6 +91,10 @@ const App = props => {
             change to selected instrument DOM updates */}
         <div key="instrumentSelector">
           <InstrumentSelector {...{ Instruments, dispatch }} />
+        </div>
+
+        <div key="graph">
+          <Graph />
         </div>
 
         <div key="order_entry">

@@ -30,7 +30,7 @@ export const UnstyledOrderBook = ({
   classes
 }) => {
   //console.log("Calling subscribe level 2")
-  useSubscribeLevel2({ InstrumentId, Depth: 10 }, dispatch);
+  //useSubscribeLevel2({ InstrumentId, Depth: 10 }, dispatch);
 
   const displayBuys = Object.values(buys)
     .sort((a, b) => parseFloat(b.Price) > parseFloat(a.Price))

@@ -18,9 +18,18 @@ const styles = theme => ({
     minWidth: 200
   }
 });
+//function wait(ms){
+//  var start = new Date().getTime();
+//  var end = start;
+//  while(end < start + ms) {
+//    end = new Date().getTime();
+// }
+//}
+
 
 export const UnstyledTicker = ({ InstrumentId, dispatch, level1, classes }) => {
-  useSubscribeLevel1(InstrumentId, dispatch);
+  //useSubscribeLevel1(InstrumentId, dispatch);
+ //useSubscribeLevel1(1, dispatch);
   //console.log("Changing ticker for instrument id: " + InstrumentId)
   const {
     LastTradedPx,
@@ -30,6 +39,7 @@ export const UnstyledTicker = ({ InstrumentId, dispatch, level1, classes }) => {
     Volume,
     Timestamp
   } = level1;
+
   //console.log(LastTradedPx + " " + LastTradedQty + " " + BestBid + " " + BestOffer + " " + Volume + " " + Timestamp)
   return (
     <Table className={classes.table}>

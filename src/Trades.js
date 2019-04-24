@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import { useTrades } from './api';
+import { createWriteStream } from 'fs';
 
 const styles = theme => ({
   root: {
@@ -19,7 +20,10 @@ const styles = theme => ({
     minWidth: 200
   }
 });
-
+var cardStyle = {
+  width: '20vw',
+  height: '45vw'
+}
 export const UnstyledTrades = ({
   classes,
   trades,
@@ -29,20 +33,20 @@ export const UnstyledTrades = ({
 }) => {
   useTrades(InstrumentId, tradesSub, dispatch);
   return (
-    <Card className={classes.root}>
-      <CardHeader title="Trades" />
+    <Card style={cardStyle} className={classes.root}>
+      <CardHeader style={{ textAlign: 'center' }} title="Trades" />
       <CardContent>
-        <Table className={classes.table}>
+        <Table style={{width:"30%"}} className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell align="right">Price</TableCell>
+              <TableCell align="left">Price</TableCell>
               <TableCell align="right">Quantity</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {trades.map(({ Price, Quantity }, i) => (
               <TableRow key={i}>
-                <TableCell align="right">{Price}</TableCell>
+                <TableCell align="left">{Price}</TableCell>
                 <TableCell align="right">{Quantity}</TableCell>
               </TableRow>
             ))}

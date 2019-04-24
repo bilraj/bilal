@@ -10,6 +10,8 @@ const apex = new APEX('wss://api_demo.alphapoint.com/WSGateway/');
 export const init = async dispatch => {
   console.log("Initializing session")
   const instruments = await apex.GetInstruments({ OMSId: 1 });
+  //console.log("SDNAJDSJKA DJKSA " + instruments);
+  //alert(JSON.stringify(instruments, null, 4));
   dispatch({ type: 'SET_INSTRUMENTS', payload: instruments });
   const [instrument] = instruments;
   dispatch({ type: 'SET_SELECTED_INSTRUMENT', payload: instrument });

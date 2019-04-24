@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { login, logout } from './api';
+import { Button } from 'react-bootstrap';
+import { AbstractNav } from 'react-bootstrap';
 
 export const Login = ({ loggedIn, dispatch }) => {
   const [UserName, setUserName] = useState('');
@@ -24,7 +26,7 @@ export const Login = ({ loggedIn, dispatch }) => {
         value={Password}
         onChange={event => setPassword(event.target.value)}
       />
-      <button type="submit">Login</button>
+      <Button type="submit">Login</Button>
     </form>
   );
 };
